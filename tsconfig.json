@@ -2,7 +2,9 @@
   "compilerOptions": {
     "target": "ES6",
     "jsx": "react",
-    "noEmit": true
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node"
   },
   "exclude": [
     "node_modules",

@@ -1,8 +1,12 @@
 import * as React from 'react';
-import Calculator from './calculator';
+import {Calculator} from './calculator';
 
-export default class App extends React.Component<{}, {}> {
+interface IAppProps {
+  calculator: Calculator;
+}
+
+export default class App extends React.Component<IAppProps, {}> {
   render() {
-    return <div>{new Calculator().add(2,2)}</div>;
+    return <div>{this.props.calculator.add(2,2)}</div>;
   }
 }
