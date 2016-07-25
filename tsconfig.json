@@ -7,8 +7,6 @@
   "exclude": [
     "node_modules",
     "dist",
-    "build",
-    "typings/main.d.ts",
-    "typings/main"
+    "build"
   ]
 }
