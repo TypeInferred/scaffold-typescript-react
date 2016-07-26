@@ -7,7 +7,7 @@
     "test": "karma start build/karma.conf.js",
     "test:watch": "karma start build/karma.conf.js --no-single-run",
     "test:chrome:watch": "karma start build/karma.conf.js --no-single-run --browsers Chrome",
-    "generate:css:definitions": "./build/tools/typed-stylus-modules/cli.js -p src/**/*.styl",
+    "generate:css:definitions": "./build/tools/typed-stylus-modules/cli.js",
     "generate:css:definitions:watch": "npm run generate:css:definitions -- --watch",
     "prebuild": "npm run clean && npm run test && npm run generate:css:definitions",
     "build": "cross-env NODE_ENV=production webpack --config build/webpack.config.prod.js",

@@ -29,45 +29,62 @@ let argv = yarg.argv;
 let creator;
 
 let writeFile = f => {
+  console.log('Loading ' + f);
   fs.readFile(f, 'utf-8', (err, source) => {
     if (err) {
-      console.error('[Error] ' + err);
+      console.log('[Error] ' + err);
       return;
     }
+    console.log('Rendering ' + f);
     stylus.render(source, { filename: f }, (err, css) => {
       if (err) {
-        console.error('[Error] ' + err);
+        console.log('[Error] ' + err);
         return;
       }
-      creator.create(f, css, !!argv.w)
-      .then(content => content.writeFile())
-      .then(content => {
-        console.log('Wrote ' + chalk.green(content.outputFilePath));
-        content.messageList.forEach(message => {
-          console.warn('[Warn] ' + chalk.red(message));
-        });
-      })
-      .catch(reason => console.error(reason));
+      let cssFile = f + '.css';
+      console.log('Writing ' + cssFile);
+      fs.writeFile(cssFile, css, 'utf-8', err => {
+        if (err) {
+          console.log('[Error] ' + err);
+          return;
+        }
+        console.log('Extracting ' + cssFile);
+        creator.create(cssFile, null, !!argv.w).then(content => {
+          let outFile = f + '.d.ts';
+          content.messageList.forEach(message => {
+            console.log('[Warn] ' + chalk.red(message));
+          });
+          fs.writeFile(outFile, content.formatted, 'utf-8', err => {
+            if (err) {
+              console.log('[Error] ' + err);
+            }
+            console.log('Wrote ' + chalk.green(outFile));
+          });
+          fs.unlink(cssFile, err => {
+            if (err) {
+              console.log('[Error] ' + err);
+            }
+          });
+        })
+        .catch(reason => console.log('[Error] ' + reason));
+      });
     });
   });
 };
 
 let main = () => {
-  let rootDir, searchDir;
+  let rootDir;
   if(argv.h) {
     yarg.showHelp();
     return;
   }
 
+  let searchDir = './';
   if(argv._ && argv._[0]) {
     searchDir = argv._[0];
-  }else if(argv.p) {
-    searchDir = './';
-  }else{
-    yarg.showHelp();
-    return;
   }
-  let filesPattern = path.join(searchDir, argv.p || '**/*.css');
+    
+  let filesPattern = path.join(searchDir, argv.p || '**/*.styl');
   rootDir = process.cwd();
   creator = new DtsCreator({rootDir, searchDir, outDir: argv.o});
 
@@ -78,6 +95,7 @@ let main = () => {
         return;
       }
       if(!files || !files.length) return;
+      console.log('Found ' + files.length + ' files');
       files.forEach(writeFile);
     });
   }else{
