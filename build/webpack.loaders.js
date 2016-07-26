@@ -3,7 +3,7 @@ var modulesDir = path.join(__dirname, '..', 'node_modules');
 
 module.exports = [{
   test: /\.tsx?/,
-  loaders: ['babel', 'ts'],
+  loaders: ['ts'],
   exclude: [modulesDir]
 }, {
   test: /\.html/,
