@@ -1,4 +1,4 @@
-import {SingleInstance, InstancePerDependency} from 'eye-oh-see/dist/src/Index';
+import {SingleInstance, InstancePerDependency} from 'eye-oh-see';
 
 @SingleInstance()
 export class Add {

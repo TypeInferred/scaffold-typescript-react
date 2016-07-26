@@ -1,5 +1,5 @@
 import * as chai from 'chai';
-import {Container} from 'eye-oh-see/dist/src/Index';
+import {Container} from 'eye-oh-see';
 import {Calculator, Add} from '../src/calculator';
 const expect = chai.expect;
 
