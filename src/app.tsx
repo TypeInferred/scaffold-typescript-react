@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {Calculator} from './calculator';
+import * as style from './app.styl';
 
 interface IAppProps {
   calculator: Calculator;
@@ -7,6 +8,6 @@ interface IAppProps {
 
 export default class App extends React.Component<IAppProps, {}> {
   render() {
-    return <div>{this.props.calculator.add(2,2)}</div>;
+    return <div className={style.container}>{this.props.calculator.add(2,2)}</div>;
   }
 }
