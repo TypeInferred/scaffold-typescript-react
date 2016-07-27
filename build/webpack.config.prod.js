@@ -1,12 +1,11 @@
 var webpack = require('webpack');
-var vendorChunkPlugin = require('./webpack.vendor.chunk.plugin');
 
 module.exports = {
   devtool: 'source-map',
   entry: [
     './src/index.tsx'
   ],
-  output: require('./webpack.output'),
+  output: require('./common/webpack.output'),
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.DefinePlugin({
@@ -19,12 +18,12 @@ module.exports = {
         warnings: false
       }
     }),
-    vendorChunkPlugin
+    require('./common/webpack.vendor.chunk.plugin')
   ],
   module: {
-    loaders: require('./webpack.loaders'),
-    preLoaders: require('./webpack.preloaders')
+    loaders: require('./common/webpack.loaders'),
+    preLoaders: require('./common/webpack.preloaders')
   },
-  resolve: require('./webpack.resolve'),
-  ts: require('./webpack.ts.config')
+  resolve: require('./common/webpack.resolve'),
+  ts: require('./common/webpack.ts.config')
 };

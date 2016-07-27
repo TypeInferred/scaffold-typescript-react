@@ -11,7 +11,7 @@ module.exports = function(config) {
     reporters: ['dots'],
     singleRun: true,
     autoWatch: true,
-    webpack: require('./webpack.config.test'),
+    webpack: require('../webpack.config.test'),
     webpackServer: {
       noInfo: true,
       watchOptions: {

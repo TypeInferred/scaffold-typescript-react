@@ -4,9 +4,9 @@
   "main": "dist/index.js",
   "scripts": {
     "clean": "rimraf dist",
-    "test": "karma start build/karma.conf.js",
-    "test:watch": "karma start build/karma.conf.js --no-single-run",
-    "test:chrome:watch": "karma start build/karma.conf.js --no-single-run --browsers Chrome",
+    "test": "karma start build/test/karma.conf.js",
+    "test:watch": "npm run test -- --no-single-run",
+    "test:chrome:watch": "npm run test:watch -- --browsers Chrome",
     "generate:css:definitions": "./build/tools/typed-stylus-modules/cli.js",
     "generate:css:definitions:watch": "npm run generate:css:definitions -- --watch",
     "prebuild": "npm run clean && npm run test && npm run generate:css:definitions",
