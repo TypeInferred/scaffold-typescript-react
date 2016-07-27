@@ -12,7 +12,8 @@
     "prebuild": "npm run clean && npm run test && npm run generate:css:definitions",
     "build": "cross-env NODE_ENV=production webpack --config build/webpack.config.prod.js",
     "prestart": "npm run generate:css:definitions",
-    "start": "node build/webpack.dev.server.js"
+    "start": "node build/webpack.dev.server.js",
+    "precommit": "npm run test"
   },
   "devDependencies": {
     "chai": "3.5.0",
@@ -22,6 +23,7 @@
     "eventsource-polyfill": "0.9.6",
     "express": "4.14.0",
     "file-loader": "0.9.0",
+    "husky": "0.11.6",
     "karma": "1.1.2",
     "karma-chai": "0.1.0",
     "karma-chrome-launcher": "1.0.1",
