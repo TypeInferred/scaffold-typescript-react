@@ -3,8 +3,12 @@
   "dependencies": {},
   "globalDependencies": {
     "chai": "registry:dt/chai#3.4.0+20160601211834",
+    "material-ui": "registry:dt/material-ui#0.15.1+20160720000941",
     "mocha": "registry:dt/mocha#2.2.5+20160720003353",
     "react": "registry:dt/react#0.14.0+20160720060442",
-    "react-dom": "registry:dt/react-dom#0.14.0+20160412154040"
+    "react-dom": "registry:dt/react-dom#0.14.0+20160412154040",
+    "react-tap-event-plugin": "registry:dt/react-tap-event-plugin#0.0.0+20160602142434",
+    "redux-actions": "registry:dt/redux-actions#0.8.0+20160521154116",
+    "webpack-env": "registry:dt/webpack-env#1.12.2+20160316155526"
   }
 }
