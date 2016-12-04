@@ -40,5 +40,5 @@ https://github.com/ZachBray/docker-dev-envs
 After setting this up, you can run the following command to start the environment with port 3000 exposed:
 
 ```
-./start-dev-env.sh
+docker_vim ts 3000
 ```
