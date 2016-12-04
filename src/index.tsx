@@ -9,5 +9,9 @@ const container = new Container();
 container.register(Calculator);
 container.register(Add);
 const calculator = container.resolve(Calculator);
-
-render(<App calculator={calculator} />, document.getElementById('root'));
+const element = document.getElementById('root');
+if (element) {
+  render(<App calculator={calculator} />, element);
+} else {
+  console.error('Cannot find root element.');
+}

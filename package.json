@@ -7,7 +7,7 @@
     "test": "karma start build/test/karma.conf.js",
     "test:watch": "yarn run test -- --no-single-run",
     "test:chrome:watch": "yarn run test:watch -- --browsers Chrome",
-    "gen:css:ts": "tsm",
+    "gen:css:ts": "cd src && tsm",
     "gen:css:ts:watch": "yarn run gen:css:ts:watch -- --watch",
     "prebuild": "yarn run clean && yarn run test && yarn run gen:css:ts",
     "build": "cross-env NODE_ENV=production webpack --config build/webpack.config.prod.js",
