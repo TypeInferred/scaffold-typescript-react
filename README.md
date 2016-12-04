@@ -2,8 +2,9 @@
 
 This is a barebones project with support for the following:
 
+- Yarn
 - WebPack (with hot reloading development build)
-- TypeScript 1.8
+- TypeScript 2
 - TsLint (for linting)
 - Typings (for TypeScript definitions management)
 - React
@@ -15,19 +16,19 @@ This is a barebones project with support for the following:
 ### To run hot-reloading development server
 
 ```
-npm start
+yarn start
 ```
 
 ### To build for production
 
 ```
-npm run build
+yarn run build
 ```
 
 ### To test
 
 ```
-npm run test
+yarn run test
 ```
 
 ## Development environment
