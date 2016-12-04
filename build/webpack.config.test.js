@@ -1,7 +1,6 @@
 var webpack = require('webpack');
 
 module.exports = {
-  devtool: 'source-map',
   module: {
     loaders: require('./common/webpack.loaders'),
     preLoaders: require('./common/webpack.preloaders')

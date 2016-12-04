@@ -1,8 +1,8 @@
 var path = require('path');
-var rootDir = path.join(__dirname, '..', '..');
+var modulesDir = path.join(__dirname, '..', '..', 'node_modules');
 
 module.exports = {
   extensions: ['', '.ts', '.tsx', '.js', '.jsx', '.styl', '.css'],
-  modulesDirectories: ['node_modules'],
-  root: rootDir
+  modulesDirectories: [],
+  root: modulesDir
 };

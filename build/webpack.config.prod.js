@@ -1,10 +1,11 @@
 var webpack = require('webpack');
 
 module.exports = {
-  devtool: 'source-map',
-  entry: [
-    './src/index.tsx'
-  ],
+  entry: {
+    main: [
+      './src/Entrypoint.ts'
+    ]
+  },
   output: require('./common/webpack.output'),
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
@@ -18,7 +19,8 @@ module.exports = {
         warnings: false
       }
     }),
-    require('./common/webpack.vendor.chunk.plugin')
+    require('./common/plugins/html.index'),
+    require('./common/plugins/vendor.chunk')
   ],
   module: {
     loaders: require('./common/webpack.loaders'),

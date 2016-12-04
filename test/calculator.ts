@@ -1,14 +1,8 @@
 import * as chai from 'chai';
-import {Container} from 'eye-oh-see';
-import {Calculator, Add} from '../src/calculator';
 const expect = chai.expect;
 
 describe('Adding', () => {
   it('should be commutative', () => {
-    const container = new Container();
-    container.register(Calculator);
-    container.register(Add);
-    const calculator = container.resolve(Calculator);
-    expect(calculator.add(1, 2)).to.equal(calculator.add(2, 1));
+    expect(1 + 2).to.equal(2 + 1);
   });
 });
