@@ -1,7 +1,6 @@
 {
   "name": "PROJECT",
   "version": "0.0.0",
-  "main": "dist/index.js",
   "scripts": {
     "clean": "rimraf dist",
     "test": "karma start build/test/karma.conf.js",
@@ -12,7 +11,8 @@
     "prebuild": "yarn run clean && yarn run test && yarn run gen:css:ts",
     "build": "cross-env NODE_ENV=production webpack --config build/webpack.config.prod.js",
     "prestart": "yarn run gen:css:ts",
-    "start": "node build/webpack.dev.server.js"
+    "start": "node build/webpack.dev.server.js",
+    "precommit": "yarn run test"
   },
   "devDependencies": {
     "awesome-typescript-loader": "2.2.4",
