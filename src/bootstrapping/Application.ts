@@ -14,11 +14,15 @@ export class Application {
 
   constructor(private iocModules: Module[]) {}
 
-  public start() {
+  public start(appModule?: __WebpackModuleApi.Module) {
     this.container = new Container();
     this.bootstrapContainer();
     this.reloadState();
     this.renderRoot();
+    if (appModule && appModule.hot) {
+      appModule.hot.dispose(() => this.stop());
+      appModule.hot.accept();
+    }
   }
 
   public stop() {

@@ -7,9 +7,4 @@ const application = new Application([
   new WebUiModule()
 ]);
 
-application.start();
-
-if (module.hot) {
-  module.hot.dispose(() => application.stop());
-  module.hot.accept();
-}
+application.start(module);
