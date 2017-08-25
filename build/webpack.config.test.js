@@ -2,9 +2,7 @@ var webpack = require('webpack');
 
 module.exports = {
   module: {
-    loaders: require('./common/webpack.loaders'),
-    preLoaders: require('./common/webpack.preloaders')
+    rules: require('./common/webpack.loaders'),
   },
-  resolve: require('./common/webpack.resolve'),
-  ts: require('./common/webpack.ts.config')
+  resolve: require('./common/webpack.resolve')
 };

@@ -7,7 +7,7 @@ export abstract class Greeting {
 @InstancePerDependency(Greeting)
 export class CasualGreeting extends Greeting {
   public say() {
-    return 'Hi!';
+    return 'Hi there!';
   }
 }
 

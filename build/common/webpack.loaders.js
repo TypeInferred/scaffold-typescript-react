@@ -2,38 +2,39 @@ var path = require('path');
 var modulesDir = path.join(__dirname, '..', '..', 'node_modules');
 
 module.exports = [{
-  test: /[^\.].\.tsx?$/,
-  loaders: ['awesome-typescript'],
+  test: /\.tsx?/,
+  enforce: 'pre',
+  use: 'tslint-loader',
   exclude: [modulesDir]
 }, {
-  test: /\.d\.ts$/,
-  loaders: ['ignore'],
-  exclude: [modulesDir]
+  test: /\.tsx?/,
+  use: 'awesome-typescript-loader',
+  exclude: [modulesDir],
 }, {
   test: /\.html$/,
-  loaders: ['file'],
+  use: 'file-loader',
   exclude: [modulesDir]
 }, {
   test: /\.styl$/,
-  loaders: [
-    'style?sourceMap',
-    'css?sourceMap&modules&localIdentName=[name]__[local]___[hash:base64:5]',
-    'stylus?sourceMap'
+  use: [
+    'style-loader?sourceMap',
+    'css-loader?sourceMap&modules&localIdentName=[name]__[local]___[hash:base64:5]',
+    'stylus-loader?sourceMap'
   ],
   exclude: [modulesDir]
 }, {
   test: /\.css$/,
-  loaders: ['style', 'css']
+  use: [
+    'style-loader',
+    'css-loader'
+  ]
 }, {
   test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-  loader: 'file?name=fonts/[name].[ext]'
+  use: 'file-loader?name=fonts/[name].[ext]'
 }, {
   test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-  loader: 'file?name=fonts/[name].[ext]'
+  use: 'file-loader?name=fonts/[name].[ext]'
 }, {
   test: /\.png|ico$/,
-  loader: 'file?name=images/[name].[ext]'
-}, {
-  test: /\.json$/,
-  loader: 'file?name=config/[name].[ext]'
+  use: 'file-loader?name=images/[name].[ext]'
 }];

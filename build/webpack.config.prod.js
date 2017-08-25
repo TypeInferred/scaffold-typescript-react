@@ -8,24 +8,20 @@ module.exports = {
   },
   output: require('./common/webpack.output'),
   plugins: [
-    new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify('production')
       }
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      compressor: {
-        warnings: false
-      }
+    new webpack.LoaderOptionsPlugin({
+      minimize: true
     }),
+    new webpack.optimize.UglifyJsPlugin(),
     require('./common/plugins/html.index'),
     require('./common/plugins/vendor.chunk')
   ],
   module: {
-    loaders: require('./common/webpack.loaders'),
-    preLoaders: require('./common/webpack.preloaders')
+    rules: require('./common/webpack.loaders')
   },
-  resolve: require('./common/webpack.resolve'),
-  ts: require('./common/webpack.ts.config')
+  resolve: require('./common/webpack.resolve')
 };
