@@ -6,7 +6,6 @@ This is a barebones project with support for the following:
 - WebPack (with hot reloading development build)
 - TypeScript 2
 - TsLint (for linting)
-- Typings (for TypeScript definitions management)
 - React
 - Phantom/Karma/Mocha/Chai (for testing)
 - eye-oh-see (an IOC container)
