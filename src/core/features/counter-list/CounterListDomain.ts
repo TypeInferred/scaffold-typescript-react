@@ -1,12 +1,10 @@
-import { CounterComponent } from "./counter/CounterComponent";
-
-export const COUNTER_LIST_SCOPE = "CounterList";
+import { CounterModel } from "./counter/CounterModel";
 
 export interface ICounterListState {
-  counters: CounterComponent[];
+  counters: CounterModel[];
   total: number;
 }
 
 export interface ICounterListIntent {
-  add: null;
+  add(): void;
 }

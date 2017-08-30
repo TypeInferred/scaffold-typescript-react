@@ -1,45 +1,39 @@
 import * as chai from "chai";
-import { CounterIntent } from "./CounterIntent";
+import { ICounterState } from "./CounterDomain";
 import { CounterModel } from "./CounterModel";
 const expect = chai.expect;
 
 describe("Counter", () => {
-  const intent = new CounterIntent();
   let sut: CounterModel;
+
   beforeEach(() => {
-    sut = new CounterModel(intent);
-  });
-  afterEach(() => {
-    sut.dispose();
+    sut = new CounterModel();
   });
 
-  it("should start with count=0", done => {
+  const lastState = (): ICounterState => {
+    let value: any = null;
+    sut.state.take(1).subscribe(state => value = state);
+    return value;
+  };
+
+  it("should start with count=0", () => {
     // Assert
-    sut.count.subscribe(count => {
-      expect(count).to.equal(0);
-      done();
-    });
+    expect(lastState().count).to.equal(0);
   });
 
-  it("should accumulate increments", done => {
+  it("should accumulate increments", () => {
     // Act
-    intent.increment.onNext(null);
-    intent.increment.onNext(null);
+    sut.intent.increment();
+    sut.intent.increment();
     // Assert
-    sut.count.subscribe(count => {
-      expect(count).to.equal(2);
-      done();
-    });
+    expect(lastState().count).to.equal(2);
   });
 
-  it("should accumulate decrements", done => {
+  it("should accumulate decrements", () => {
     // Act
-    intent.decrement.onNext(null);
-    intent.decrement.onNext(null);
+    sut.intent.decrement();
+    sut.intent.decrement();
     // Assert
-    sut.count.subscribe(count => {
-      expect(count).to.equal(-2);
-      done();
-    });
+    expect(lastState().count).to.equal(-2);
   });
 });

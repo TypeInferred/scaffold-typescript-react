@@ -3,7 +3,7 @@ var webpack = require('webpack');
 module.exports = {
   entry: {
     main: [
-      './src/Entrypoint.ts'
+      './src/Entrypoint.tsx'
     ]
   },
   output: require('./common/webpack.output'),

@@ -1,32 +1,52 @@
-import { InstancePerScope , ScopedFactory } from "eye-oh-see";
-import { Model } from "eye-oh-see-react/dist/Reactive";
-import { Observable } from "rx";
-import { CounterComponent } from "./counter/CounterComponent";
-import { COUNTER_SCOPE } from "./counter/CounterDomain";
-import { COUNTER_LIST_SCOPE , ICounterListState } from "./CounterListDomain";
-import { CounterListIntent } from "./CounterListIntent";
+import { Disposable , Factory , InstancePerDependency } from "eye-oh-see";
+import { IModel } from "eye-oh-see-react/dist/IModel";
+import "eye-oh-see-react/dist/Rx";
+import { Observable , Subject } from "rx";
+import { CounterModel } from "./counter/CounterModel";
+import { ICounterListIntent , ICounterListState } from "./CounterListDomain";
 
-@InstancePerScope(COUNTER_LIST_SCOPE)
-export class CounterListModel implements Model<ICounterListState> {
+@InstancePerDependency()
+@Disposable()
+export class CounterListModel implements IModel<ICounterListIntent, ICounterListState> {
+  private readonly add = new Subject<null>();
+  private readonly seed: ICounterListState = {
+    counters: [],
+    total: 0
+  };
 
-  public counters = Observable.defer(() => {
-    const mutations = this.intent.add.map(() => (existingCounters: CounterComponent[]) => {
-      const newCounter = this.counterFactory();
-      const newCounters: CounterComponent[] = [...existingCounters, newCounter];
-      return newCounters;
-    });
-    return mutations.scan((acc, f) => f(acc), []).startWith([]);
-  }).shareReplay(1);
+  private readonly counters =
+    this.addReducer() .scan((acc, reduce) => reduce(acc), this.seed.counters)
+        .startWith(this.seed.counters);
 
-  public total = this.counters.map(counters =>
-    counters.map(counter => counter.state.count)
-            .reduce((subTotal$, count$) =>
-              subTotal$.combineLatest(count$, (acc, count) => acc + count),
-              Observable.just(0))
-  ).switch();
+  public readonly intent = {
+    add: () => this.add.onNext(null)
+  };
 
-  constructor(private intent: CounterListIntent,
-              @ScopedFactory(COUNTER_SCOPE, CounterComponent)
-              private counterFactory: () => CounterComponent) {
+  public dispose: () => void;
+
+  public readonly state = this.counters
+    .flatMap(counters =>
+      this.calculateTotal(counters)
+          .map(total => ({ counters, total }))
+    )
+    .cache(disposer => this.dispose = disposer);
+
+  constructor(@Factory(CounterModel)
+              private counterFactory: () => CounterModel) {
+  }
+
+  private addReducer() {
+    return this.add.map(() => (state: CounterModel[]): CounterModel[] => (
+      [...state, this.counterFactory()]
+    ));
+  }
+
+  private calculateTotal(counters: CounterModel[]) {
+    if (!counters.length) {
+      return Observable.just(this.seed.total);
+    }
+    const count$s = counters.map(c => c.state.map(s => s.count));
+    return Observable.combineLatest(count$s)
+                     .map(counts => counts.reduce((acc, count) => acc + count), this.seed.total);
   }
 }

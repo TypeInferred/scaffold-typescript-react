@@ -1,22 +1,17 @@
-import { Callbacks , reactive } from "eye-oh-see-react/dist/Reactive";
+import { Reactive } from "eye-oh-see-react/dist/Reactive";
 import * as React from "react";
 import { CounterView } from "./counter/CounterView";
 import { ICounterListIntent , ICounterListState } from "./CounterListDomain";
 
-export interface ICounterListProps {
-  state: ICounterListState;
-  intent: Callbacks<ICounterListIntent>;
-}
+export type CounterListProps = ICounterListState & ICounterListIntent;
 
-const DumbCounterListView = (props: ICounterListProps) =>
+const DumbCounterListView = (props: CounterListProps) =>
   <div>
-    <p>Total: {props.state.total}</p>
-    <div><button onClick={() => props.intent.add(null)}>Add</button></div>
+    <p>Total: {props.total}</p>
+    <div><button onClick={() => props.add()}>Add</button></div>
     <div>
-      {console.log.call(console, props.state)
-       || props.state.counters
-       && props.state.counters.map(component => <CounterView {...component} />)}
+       {props.counters.map(component => <CounterView {...component} />)}
     </div>
   </div>;
 
-export const CounterListView = reactive(DumbCounterListView);
+export const CounterListView = Reactive(DumbCounterListView);

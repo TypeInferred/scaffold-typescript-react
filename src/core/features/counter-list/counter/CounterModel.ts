@@ -1,28 +1,43 @@
-import { Disposable , InstancePerScope } from "eye-oh-see";
-import { Model } from "eye-oh-see-react/dist/Reactive";
-import { Observable , SerialDisposable } from "rx";
-import { COUNTER_SCOPE , ICounterState } from "./CounterDomain";
-import { CounterIntent } from "./CounterIntent";
+import { Disposable , InstancePerDependency } from "eye-oh-see";
+import { IModel } from "eye-oh-see-react/dist/IModel";
+import "eye-oh-see-react/dist/Rx";
+import { Observable , Subject } from "rx";
+import { ICounterIntent , ICounterState } from "./CounterDomain";
 
-@InstancePerScope(COUNTER_SCOPE)
+@InstancePerDependency()
 @Disposable()
-export class CounterModel implements Model<ICounterState> {
+export class CounterModel implements IModel<ICounterIntent, ICounterState> {
+  private readonly seed: ICounterState = { count: 0 };
+  private readonly increment = new Subject<null>();
+  private readonly decrement = new Subject<null>();
 
-  public readonly count = Observable.defer(() => {
-    const incrementCount = this.intents.increment.map(() => (x: number) => x + 1);
-    const decrementCount = this.intents.decrement.map(() => (x: number) => x - 1);
-    return Observable.merge(incrementCount, decrementCount)
-                     .scan((acc, f) => f(acc), 0)
-                     .startWith(0);
-  }).replay(undefined, 1);
+  public dispose: () => void;
 
-  private subscription = new SerialDisposable();
+  public readonly intent = {
+    decrement: () => this.decrement.onNext(null),
+    increment: () => this.increment.onNext(null)
+  };
 
-  constructor(private intents: CounterIntent) {
-    this.subscription.setDisposable(this.count.connect());
+  public readonly state = Observable.defer(() => this.reducer())
+    .scan((acc, reduce) => reduce(acc), this.seed)
+    .startWith(this.seed)
+    .cache(disposer => this.dispose = disposer);
+
+  private reducer() {
+    return Observable.merge(this.incrementReducer(), this.decrementReducer());
   }
 
-  public dispose() {
-    this.subscription.dispose();
+  private incrementReducer() {
+    return this.increment.map(() => (state: ICounterState): ICounterState => ({
+      ...state,
+      count: state.count + 1
+    }));
+  }
+
+  private decrementReducer() {
+    return this.decrement.map(() => (state: ICounterState): ICounterState => ({
+      ...state,
+      count: state.count - 1
+    }));
   }
 }
