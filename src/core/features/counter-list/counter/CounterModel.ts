@@ -1,4 +1,4 @@
-import { Intent , Model } from "eye-oh-see-react/dist/MVI";
+import { Intent , Model } from "eye-oh-see-react/dist/Model";
 import { CounterIntentKeys , ICounterIntent , ICounterState } from "./CounterDomain";
 
 @Model<CounterModel, ICounterIntent, ICounterState>()

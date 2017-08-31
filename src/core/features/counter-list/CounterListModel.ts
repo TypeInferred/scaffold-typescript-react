@@ -1,5 +1,5 @@
 import { Factory } from "eye-oh-see";
-import { Intent , Model } from "eye-oh-see-react/dist/MVI";
+import { Intent , Model } from "eye-oh-see-react/dist/Model";
 import { Observable } from "rx";
 import { CounterModel } from "./counter/CounterModel";
 import { CounterListKeys , ICounterListIntent , ICounterListState } from "./CounterListDomain";

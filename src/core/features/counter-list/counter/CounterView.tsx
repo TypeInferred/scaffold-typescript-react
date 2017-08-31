@@ -1,16 +1,30 @@
-import { WriteIntent } from "eye-oh-see-react/dist/MVI";
-import { Reactive } from "eye-oh-see-react/dist/Reactive";
+import * as classNames from "classnames";
+import { StyledView } from "eye-oh-see-react/dist/StyledView";
 import * as React from "react";
-import * as style from "./Counter.styl";
 import { ICounterIntent , ICounterState } from "./CounterDomain";
 
-export type CounterProps = ICounterState & WriteIntent<ICounterIntent>;
+const style = {
+  baseCount: {
+    transition: "color 1s"
+  },
+  negativeCount: {
+    color: "red"
+  },
+  positiveCount: {
+    color: "blue"
+  }
+};
 
-const DumbCounterView = (props: CounterProps) =>
+export const CounterView = StyledView<ICounterIntent, ICounterState, typeof style, {}>(style)(props =>
   <div>
-    <p className={style.count}>Count: {props.count}</p>
+    <p className={classNames({
+        [props.classes.baseCount]: true,
+        [props.classes.negativeCount]: props.count < 0,
+        [props.classes.positiveCount]: props.count >= 0
+      })}>
+      Count: {props.count}
+    </p>
     <button onClick={() => props.increment(1)}>Increment</button>
     <button onClick={() => props.decrement(1)}>Decrement</button>
-  </div>;
-
-export const CounterView = Reactive<ICounterIntent, ICounterState>(DumbCounterView);
+  </div>
+);

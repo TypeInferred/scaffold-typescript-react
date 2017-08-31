@@ -1,4 +1,4 @@
-import { IntentKeys } from "eye-oh-see-react/dist/MVI";
+import { IntentKeys } from "eye-oh-see-react/dist/Model";
 import { CounterModel } from "./counter/CounterModel";
 
 export interface ICounterListState {
