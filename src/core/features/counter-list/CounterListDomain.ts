@@ -1,3 +1,4 @@
+import { IntentKeys } from "eye-oh-see-react/dist/MVI";
 import { CounterModel } from "./counter/CounterModel";
 
 export interface ICounterListState {
@@ -6,5 +7,9 @@ export interface ICounterListState {
 }
 
 export interface ICounterListIntent {
-  add(): void;
+  add: undefined;
 }
+
+export const CounterListKeys: IntentKeys<ICounterListIntent> = {
+  add: "add"
+};

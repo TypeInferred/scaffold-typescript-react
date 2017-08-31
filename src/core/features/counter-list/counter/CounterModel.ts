@@ -1,43 +1,31 @@
-import { Disposable , InstancePerDependency } from "eye-oh-see";
-import { IModel } from "eye-oh-see-react/dist/IModel";
-import "eye-oh-see-react/dist/Rx";
-import { Observable , Subject } from "rx";
-import { ICounterIntent , ICounterState } from "./CounterDomain";
+import { Intent , Model } from "eye-oh-see-react/dist/MVI";
+import { CounterIntentKeys , ICounterIntent , ICounterState } from "./CounterDomain";
 
-@InstancePerDependency()
-@Disposable()
-export class CounterModel implements IModel<ICounterIntent, ICounterState> {
+@Model<CounterModel, ICounterIntent, ICounterState>()
+export class CounterModel {
   private readonly seed: ICounterState = { count: 0 };
-  private readonly increment = new Subject<null>();
-  private readonly decrement = new Subject<null>();
 
-  public dispose: () => void;
+  public intent = Intent(CounterIntentKeys);
 
-  public readonly intent = {
-    decrement: () => this.decrement.onNext(null),
-    increment: () => this.increment.onNext(null)
-  };
+  public state$ = this.transform$()
+      .scan((state, transform) => transform(state), this.seed)
+      .startWith(this.seed);
 
-  public readonly state = Observable.defer(() => this.reducer())
-    .scan((acc, reduce) => reduce(acc), this.seed)
-    .startWith(this.seed)
-    .cache(disposer => this.dispose = disposer);
-
-  private reducer() {
-    return Observable.merge(this.incrementReducer(), this.decrementReducer());
-  }
-
-  private incrementReducer() {
-    return this.increment.map(() => (state: ICounterState): ICounterState => ({
+  private incrementTransform$() {
+    return this.intent.read.increment.map(delta => (state: ICounterState): ICounterState => ({
       ...state,
-      count: state.count + 1
+      count: state.count + delta
     }));
   }
 
-  private decrementReducer() {
-    return this.decrement.map(() => (state: ICounterState): ICounterState => ({
+  private decrementTransform$() {
+    return this.intent.read.decrement.map(delta => (state: ICounterState): ICounterState => ({
       ...state,
-      count: state.count - 1
+      count: state.count - delta
     }));
+  }
+
+  private transform$() {
+    return this.incrementTransform$().merge(this.decrementTransform$());
   }
 }

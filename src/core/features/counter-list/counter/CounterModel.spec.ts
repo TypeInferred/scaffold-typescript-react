@@ -12,7 +12,7 @@ describe("Counter", () => {
 
   const lastState = (): ICounterState => {
     let value: any = null;
-    sut.state.take(1).subscribe(state => value = state);
+    sut.state$.take(1).subscribe(state => value = state);
     return value;
   };
 
@@ -23,16 +23,16 @@ describe("Counter", () => {
 
   it("should accumulate increments", () => {
     // Act
-    sut.intent.increment();
-    sut.intent.increment();
+    sut.intent.write.increment(1);
+    sut.intent.write.increment(1);
     // Assert
     expect(lastState().count).to.equal(2);
   });
 
   it("should accumulate decrements", () => {
     // Act
-    sut.intent.decrement();
-    sut.intent.decrement();
+    sut.intent.write.decrement(1);
+    sut.intent.write.decrement(1);
     // Assert
     expect(lastState().count).to.equal(-2);
   });
